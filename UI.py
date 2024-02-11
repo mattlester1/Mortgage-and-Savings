@@ -31,12 +31,30 @@ class User:
         return self.income
     
     
-class MortgageCal:
+class Calculator:
     
     def __init__(self, interestRate = .05, numYears = 30):
         
         self.interestRate = interestRate
         self.numYears = numYears
+        
+    def moreInfo(self, user):
+    
+        print("Great!! Let's get some more info form you.\n")
+        user.income = int(input("\nWhat is you monthly income after taxes? "))
+        user.budget = int(input("\nDo you have a house budget? If so, what is that amount? "))
+        user.downPayment = int(input("\nDo you plan to put down a down payment? If so, how much? "))
+        
+    def whatCalculator(self, selection, calculator, user):
+        
+        if selection == "1":
+            calculator.moreInfo(user)
+            return calculator.davesRecommend(user.income, user.downPayment)
+
+        else:
+            
+            print("selection 2 was selected")
+            
         
     def davesRecommend(self, income, downPayment):
         
@@ -46,7 +64,15 @@ class MortgageCal:
         
         p = (one4th * (((1 + monthInterst)** numMonths) -1)) / (monthInterst * (1 + monthInterst)** numMonths)
         roundedP = int(p)
-        return roundedP
+        
+        total = p + downPayment
+        roundedTotal = int(total)
+        
+        monthPay = (monthInterst * p * (1 + monthInterst)**numMonths) / (((1 + monthInterst)**numMonths)-1)
+        roundedMonthly = int(monthPay)
+        
+        
+        return roundedTotal, roundedP, roundedMonthly
         
     
     
@@ -110,12 +136,7 @@ class UI:
         user.selection = input(f"\nHi {user.name} how can we help today? Please select: 1 For mortgage calculator based on Dave's rules, and 2 for Savings goals: ")
         return user
     
-    def moreInfo(self, user):
-        
-        print("Great!! Let's get some more info form you.\n")
-        user.income = int(input("\nWhat is you monthly income after taxes? "))
-        user.budget = int(input("\nDo you have a house budget? If so, what is that amount? "))
-        user.downPayment = int(input("\nDo you plan to put down a down payment? If so, how much? "))
+
         
                                
         

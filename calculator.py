@@ -11,13 +11,16 @@ from UI import *
 
 
 welcome = UI()
-calculator   = MortgageCal()
+calculator   = Calculator()
 
 welcome.titleScreen()
 user = welcome.introduction()
-welcome.moreInfo(user)
+# welcome.moreInfo(user)
 
-HouseBudget = calculator.davesRecommend(user.income, user.downPayment)
 
-print(HouseBudget)
+
+HouseBudget, financed, monthly = calculator.whatCalculator(user.selection, calculator, user)
+
+print(HouseBudget, financed, monthly)
+
 
