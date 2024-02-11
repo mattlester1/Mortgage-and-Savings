@@ -9,7 +9,15 @@
 
 from UI import *
 
+
 welcome = UI()
+calculator   = MortgageCal()
 
 welcome.titleScreen()
- 
+user = welcome.introduction()
+welcome.moreInfo(user)
+
+HouseBudget = calculator.davesRecommend(user.income, user.downPayment)
+
+print(HouseBudget)
+
