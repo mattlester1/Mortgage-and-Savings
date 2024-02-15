@@ -52,14 +52,15 @@ class Calculator:
         
     def moreInfo(self):
     
-        print("\nGreat!! Let's get some more info form you.\n")
+        print("\nGreat!! I can help you calculate how much house you can afford. Let's get some more info form you.\n")
     
         self.user.income = int(input("\nWhat is you monthly income after taxes? "))
-        self.user.budget = int(input("\nDo you have a house budget? If so, what is that amount? "))
         self.user.downPayment = int(input("\nDo you plan to put down a down payment? If so, how much? "))
              
             
     def savingsGoalInfo(self):
+        
+        print("\nGreat! Lets get a little more info from you so we can determine how much you need to save each month to reach your goal.\n")
         
         self.savingsGoal = int(input("How much would you like to save? "))
         self.savingsMonths = int(input("How fast do you want to save this amount? Please enter a number of months: "))
@@ -71,6 +72,23 @@ class Calculator:
         if self.user.selection == 1:
             self.moreInfo()
             return self.davesRecommend()
+
+        else:
+            self.savingsGoalInfo()
+            return self.savingsCalculator()
+        
+        
+    def switchCalculator(self):
+        
+        if self.user.selection == 1: self.user.selection = 2 
+            
+        else: self.user.selection = 1
+        
+        
+        if self.user.selection == 1:
+           
+           self.moreInfo()
+           return self.davesRecommend()
 
         else:
             self.savingsGoalInfo()
@@ -115,7 +133,7 @@ class Calculator:
         
         else:
             
-            print(f"\nIn order to reach your savings goal of {self.savingsGoal} in {self.savingsMonths} months you need to contribute")
+            print(f"\nIn order to reach your savings goal of {self.savingsGoal} in {self.savingsMonths} months (at an annual interest rate of 4.35%) you need to contribute")
             print(f"{self.monthlyAmount} each month.")
     
         
@@ -125,14 +143,6 @@ class UI:
     def __init__(self) -> None:
         pass
     
-    def gui(self):
-        root = Tk()
-        frm = ttk.Frame(root, padding =15)
-        frm.grid()
-        ttk.Label(frm, text = self.titleScreen()).grid(column = 0, row = 0)
-        ttk.Button(frm, text = "Quit", command = root.destroy).grid(column = 1, row = 0)
-        root.mainloop()
-        
     
     def titleScreen(self):
         
@@ -209,17 +219,6 @@ class UI:
     
     def anythingElse(self):
         
+        
         return input("Is there anything else? Y or N: ")
     
-
-        
-                              
-# class App(tk.Frame):
-    
-#     def __init__(self, master = None):
-#         super().__init__(master)
-#         self.pack()
-        
-    
-         
-        
