@@ -11,16 +11,22 @@ from UI import *
 
 
 welcome = UI()
-calculator   = Calculator()
+# welcome.gui()
 
+# myApp = App()
+# myApp.master.title(welcome.titleScreen())
+# myApp.master.maxsize(1000,400)
+# myApp.mainloop()
 welcome.titleScreen()
 user = welcome.introduction()
+calculator   = Calculator(user)
 # welcome.moreInfo(user)
 
 
+calculator.whatCalculator()
+calculator.outPut()
+welcome.anythingElse()
 
-HouseBudget, financed, monthly = calculator.whatCalculator(user.selection, calculator, user)
-
-print(HouseBudget, financed, monthly)
+# print(HouseBudget, financed, monthly)
 
 

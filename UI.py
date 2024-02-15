@@ -8,6 +8,10 @@
 '''
 
 import numpy as np
+from tkinter import *
+# import tkinter as tk
+from tkinter import ttk
+
 
 class User:
     
@@ -33,48 +37,86 @@ class User:
     
 class Calculator:
     
-    def __init__(self, interestRate = .05, numYears = 30):
+    def __init__(self, user, interestRate = .0435, numYears = 15):
         
         self.interestRate = interestRate
         self.numYears = numYears
+        self.user = user
+        self.houseBudget = 0
+        self.financed = 0
+        self.monthly = 0
+        self.savingsGoal = 0
+        self.savingsMonths = 0
+        self.initialDeposit = 0
+        self.monthlyAmount = 0
         
-    def moreInfo(self, user):
+    def moreInfo(self):
     
-        print("Great!! Let's get some more info form you.\n")
-        user.income = int(input("\nWhat is you monthly income after taxes? "))
-        user.budget = int(input("\nDo you have a house budget? If so, what is that amount? "))
-        user.downPayment = int(input("\nDo you plan to put down a down payment? If so, how much? "))
+        print("\nGreat!! Let's get some more info form you.\n")
+    
+        self.user.income = int(input("\nWhat is you monthly income after taxes? "))
+        self.user.budget = int(input("\nDo you have a house budget? If so, what is that amount? "))
+        self.user.downPayment = int(input("\nDo you plan to put down a down payment? If so, how much? "))
+             
+            
+    def savingsGoalInfo(self):
         
-    def whatCalculator(self, selection, calculator, user):
+        self.savingsGoal = int(input("How much would you like to save? "))
+        self.savingsMonths = int(input("How fast do you want to save this amount? Please enter a number of months: "))
+        self.initialDeposit =int(input("Do you have a initial deposit? Please enter a numerical value: ")) 
         
-        if selection == "1":
-            calculator.moreInfo(user)
-            return calculator.davesRecommend(user.income, user.downPayment)
+        
+    def whatCalculator(self):
+        
+        if self.user.selection == 1:
+            self.moreInfo()
+            return self.davesRecommend()
 
         else:
+            self.savingsGoalInfo()
+            return self.savingsCalculator()
             
-            print("selection 2 was selected")
             
         
-    def davesRecommend(self, income, downPayment):
+    def davesRecommend(self):
         
-        one4th = income * .25
+        one4th = self.user.income * .25
         numMonths = self.numYears * 12
         monthInterst = self.interestRate / 12
         
         p = (one4th * (((1 + monthInterst)** numMonths) -1)) / (monthInterst * (1 + monthInterst)** numMonths)
-        roundedP = int(p)
+        self.financed = int(p)
         
-        total = p + downPayment
-        roundedTotal = int(total)
+        total = p + self.user.downPayment
+        self.houseBudget = int(total)
         
         monthPay = (monthInterst * p * (1 + monthInterst)**numMonths) / (((1 + monthInterst)**numMonths)-1)
-        roundedMonthly = int(monthPay)
+        self.monthly = int(monthPay)
         
         
-        return roundedTotal, roundedP, roundedMonthly
+    def savingsCalculator(self):
         
-    
+        
+        monthlyIR = self.interestRate / 12
+        self.monthlyAmount = ((((self.savingsGoal - self.initialDeposit * (1 + monthlyIR)** self.savingsMonths))) * monthlyIR) / ((1+ monthlyIR)** self.savingsMonths - 1)
+        self.monthlyAmount = int(self.monthlyAmount)
+        
+        return self.monthlyAmount
+        
+    def outPut(self):
+        
+        
+        if self.user.selection == 1:
+            
+            print(f"""Based on what you have given: 
+            You can afford a {self.houseBudget} house.
+            This includes your {self.user.downPayment} down payment and a financed amount of {self.financed}.
+            This leads to a monthly payment of {self.monthly}, which is 25% of your take home pay.""")
+        
+        else:
+            
+            print(f"\nIn order to reach your savings goal of {self.savingsGoal} in {self.savingsMonths} months you need to contribute")
+            print(f"{self.monthlyAmount} each month.")
     
         
 
@@ -82,6 +124,15 @@ class UI:
     
     def __init__(self) -> None:
         pass
+    
+    def gui(self):
+        root = Tk()
+        frm = ttk.Frame(root, padding =15)
+        frm.grid()
+        ttk.Label(frm, text = self.titleScreen()).grid(column = 0, row = 0)
+        ttk.Button(frm, text = "Quit", command = root.destroy).grid(column = 1, row = 0)
+        root.mainloop()
+        
     
     def titleScreen(self):
         
@@ -133,11 +184,42 @@ class UI:
         
         user = User(input("What is your name: "))
         
-        user.selection = input(f"\nHi {user.name} how can we help today? Please select: 1 For mortgage calculator based on Dave's rules, and 2 for Savings goals: ")
+        user.selection = int(input(f"\nHi {user.name} how can we help today? Please select: 1 For mortgage calculator based on Dave's rules, and 2 for Savings goals: "))
+        
+ 
+
+        while True:    
+            
+            try:
+                if user.selection != 1 and user.selection != 2:
+                    raise ValueError("Please enter either 1 or 2: ")
+                else:
+                    break
+            
+
+            except ValueError as e:
+                user.selection = int(input(e))
+                if user.selection == 1 or user.selection == 2:
+                    break
+                
+                
+                
+
         return user
+    
+    def anythingElse(self):
+        
+        return input("Is there anything else? Y or N: ")
     
 
         
-                               
+                              
+# class App(tk.Frame):
+    
+#     def __init__(self, master = None):
+#         super().__init__(master)
+#         self.pack()
         
+    
+         
         
