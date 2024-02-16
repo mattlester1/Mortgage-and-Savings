@@ -8,9 +8,6 @@
 '''
 
 import numpy as np
-from tkinter import *
-# import tkinter as tk
-from tkinter import ttk
 
 
 class User:
